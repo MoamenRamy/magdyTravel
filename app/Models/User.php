@@ -27,6 +27,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'address',
+        'currency_id',
     ];
 
     /**
@@ -58,4 +60,24 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function rides()
+    {
+        return $this->hasMany(Ride::class);
+    }
+
+    public function travels()
+    {
+        return $this->belongsToMany(Travel::class);
+    }
+
+    public function currency()
+    {
+        return $this->hasOne(Currency::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }
