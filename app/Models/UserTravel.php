@@ -33,4 +33,9 @@ class UserTravel extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function travel()
+    {
+        return $this->belongsTo(Travel::class);
+    }
 }

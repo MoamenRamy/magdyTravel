@@ -16,6 +16,11 @@ class Review extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function travel()
+    {
+        return $this->belongsTo(Travel::class);
+    }
+
     public function avgRating()
     {
         return ($this->service_rating + $this->amenities_rating + $this->location_rating + $this->price_rating) / 4;

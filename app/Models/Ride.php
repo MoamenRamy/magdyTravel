@@ -11,8 +11,8 @@ class Ride extends Model
 
     protected $guarded = [];
 
-    public function user()
+    public function destination()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(Destination::class);
     }
 }

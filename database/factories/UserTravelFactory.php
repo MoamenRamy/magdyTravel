@@ -17,7 +17,7 @@ class UserTravelFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => $this->faker->numberBetween(1, 50),
+            // 'user_id' => $this->faker->numberBetween(1, 50),
             'travel_id' => $this->faker->numberBetween(1, 10),
             'bookDate' => $this->faker->dateTime(),
             'userAddress' => $this->faker->address(),

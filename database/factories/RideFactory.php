@@ -17,10 +17,13 @@ class RideFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => $this->faker->numberBetween(1, 50),
+            'destination_id' => $this->faker->numberBetween(1, 50),
             'from' => $this->faker->address(),
             'to' => $this->faker->address(),
-            'dateTime' => $this->faker->dateTime(),
+            'dateTime' => $this->faker->dateTimeBetween('now', '+30 days'),
+            'guest' => $this->faker->numberBetween(1, 4),
+            'phoneNumber' => $this->faker->phoneNumber,
+            'note' => $this->faker->text(50),
             'price' => rand(200, 300) . '.99',
         ];
     }

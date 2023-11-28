@@ -13,16 +13,20 @@ return new class extends Migration
     {
         Schema::create('rides', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('destination_id');
             $table->string('from');
             $table->string('to');
-            $table->dateTime('dateTime');
+            $table->dateTime('dateTime'); // must in feuture
+            $table->integer('guest')->default(1);
+            $table->string('phoneNumber');
+            $table->text('note')->nullable();
             $table->decimal('price', 8, 2);
+            $table->string('code')->default('USD');
             $table->timestamps();
 
-            $table->foreign('user_id')
+            $table->foreign('destination_id')
             ->references('id')
-            ->on('users')
+            ->on('destinations')
             ->onDelete('cascade');
         });
     }

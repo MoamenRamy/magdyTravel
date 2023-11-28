@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Trip extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $guarded = ['price'];
 
-    public function travels()
+    public function changeTripPrice()
     {
-        return $this->hasMany(Travel::class);
+        return $this->belongsTo(ChangeTripPrice::class);
     }
 }

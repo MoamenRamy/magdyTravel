@@ -1,0 +1,118 @@
+<?php
+
+namespace App\Http\Controllers\api;
+
+use App\Http\Controllers\Controller;
+use App\Models\ChangeTripPrice;
+use App\Models\Currency;
+use App\Models\Trip;
+use Illuminate\Http\Request;
+use App\Traits\ChangeCurrencyTrait;
+use Carbon\Carbon;
+
+class TripController extends Controller
+{
+    use ChangeCurrencyTrait;
+
+    public $trip;
+
+    public function __construct(Trip $trip)
+    {
+        $this->trip = $trip;
+    }
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $trip = $this->trip::paginate(50);
+        return $trip;
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'userName' => 'required',
+            'dateTime' => 'required|date|after:now',
+            'phone' => 'required',
+            'guest' => 'required',
+            'code' => 'required',
+        ]);
+
+        $trip = new $this->trip;
+
+        $tripPrice = ChangeTripPrice::latest()->first();
+        $price = $tripPrice->price;
+        $currency = Currency::where('code', $request->code)->first();
+        $currencyId = $currency->id;
+        $newPrice  = $this->changeCurrency($currencyId, $price);
+
+        $trip->userName = $request->userName;
+        $trip->dateTime = $request->dateTime;
+        $trip->phone = $request->phone;
+        $trip->guest = $request->guest;
+        $trip->code = $request->code;
+        $trip->note = $request->note;
+        $trip->price = $newPrice;
+        $trip->save();
+
+        return response()->json($trip, 201);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show($id)
+    {
+        $trip = $this->trip::findOrFail($id);
+        return $trip;
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Trip $trip)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, $id)
+    {
+        $trip = $this->trip::findOrFail($id);
+        $trip->update($request->all());
+        return $trip;
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
+    {
+        $this->trip::findOrFail($id)->delete();
+        return 204;
+    }
+
+    // public function changePrice(Request $request)
+    // {
+    //     $price = $request->price;
+
+    //     // Assuming $this->trip is an instance of the model representing your trips
+    //     $this->trip->where('dateTime', '>', now())->update(['price' => $price]);
+
+    //     return response()->json(['message' => 'Price updated successfully']);
+    // }
+}
