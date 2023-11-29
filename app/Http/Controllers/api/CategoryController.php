@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Resources\Category as CategoryResource;
 
 class CategoryController extends Controller
 {
@@ -19,8 +20,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $category = $this->category::paginate(10);
-        return $category;
+        $category = CategoryResource::collection($this->category::all());
+        return $category->response()->setStatusCode(200);
     }
 
 
@@ -41,9 +42,23 @@ class CategoryController extends Controller
             'title' => ['required', 'string'],
             'description' => ['required', 'string'],
         ]);
-        $category = $this->category::create($request->all());
 
-        return $category;
+        // Create a new category and assign the values from the request
+        $category = new $this->category;
+        $category->title = $request->title;
+        $category->description = $request->description;
+
+        // Generate a slug by concatenating the title and a random number
+        $category->slug = $request->title . '-' . rand(0, 50);
+
+        // Save the category
+        $category->save();
+
+        // Transform the category model into a resource
+        $categoryResource = new CategoryResource($category);
+
+        // Return the transformed data as a JSON response with a 200 status code
+        return $categoryResource->response()->setStatusCode(201);
     }
 
     /**
@@ -52,7 +67,9 @@ class CategoryController extends Controller
     public function show(string $id)
     {
         $category = $this->category::findOrFail($id);
-        return $category;
+        $categoryResource = new CategoryResource($category);
+
+        return $categoryResource->response()->setStatusCode(200)->header('Additional Header', 'True');;
     }
 
     /**
@@ -73,7 +90,9 @@ class CategoryController extends Controller
 
         $category->update($request->all());
 
-        return $category;
+        $categoryResource = new CategoryResource($category);
+
+        return $categoryResource->response()->setStatusCode(200);
     }
 
     /**
@@ -82,6 +101,6 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         $this->category::findOrFail($id)->delete();
-        return 204;
+        return response()->json(['message' => 'deleted successfuly'], 200);
     }
 }

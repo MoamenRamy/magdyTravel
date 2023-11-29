@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('plan');
             $table->string('address');
             $table->decimal('price', 8, 2);
-            $table->dateTime('dateTime');
+            $table->dateTime('dateTime')->nullable();
             $table->integer('bookedCount')->default(0);
             $table->string('period');
             $table->timestamps();
@@ -29,7 +29,7 @@ return new class extends Migration
             ->references('id')
             ->on('categories')
             ->onDelete('cascade');
-        
+
         });
     }
 

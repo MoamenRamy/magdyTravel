@@ -8,6 +8,7 @@ use App\Models\Destination;
 use App\Models\Ride;
 use Illuminate\Http\Request;
 use App\Traits\ChangeCurrencyTrait;
+use App\Http\Resources\Ride as RideResource;
 
 class RideController extends Controller
 {
@@ -25,8 +26,8 @@ class RideController extends Controller
      */
     public function index()
     {
-        $rides = $this->ride::paginate(50);
-        return $rides;
+        $rides = RideResource::collection($this->ride::paginate(20));
+        return $rides->response()->setStatusCode(200);
     }
 
     /**
@@ -71,6 +72,10 @@ class RideController extends Controller
             'code' => $request->code,
         ]);
 
+        $rideResource = new RideResource($ride);
+
+        return $rideResource->response()->setStatusCode(201);
+
         return $ride;
     }
 
@@ -80,7 +85,10 @@ class RideController extends Controller
     public function show(string $id)
     {
         $ride = $this->ride::findOrFail($id);
-        return $ride;
+
+        $rideResource = new RideResource($ride);
+
+        return $rideResource->response()->setStatusCode(200)->header('Additional Header', 'True');
     }
 
     /**
@@ -94,11 +102,15 @@ class RideController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    // admin
     public function update(Request $request, string $id)
     {
         $ride = $this->ride::findOrFail($id);
         $ride->update($request->all());
-        return $ride;
+
+        $rideResource = new RideResource($ride);
+
+        return $rideResource->response()->setStatusCode(200);
     }
 
     /**
@@ -107,7 +119,6 @@ class RideController extends Controller
     public function destroy(string $id)
     {
         $this->ride::findOrFail($id)->delete();
-        return 204;
-
+        return response()->json(['message' => 'deleted successfuly'], 200);
     }
 }

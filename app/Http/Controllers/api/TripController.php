@@ -8,7 +8,7 @@ use App\Models\Currency;
 use App\Models\Trip;
 use Illuminate\Http\Request;
 use App\Traits\ChangeCurrencyTrait;
-use Carbon\Carbon;
+use App\Http\Resources\Trip as TripResource;
 
 class TripController extends Controller
 {
@@ -25,8 +25,8 @@ class TripController extends Controller
      */
     public function index()
     {
-        $trip = $this->trip::paginate(50);
-        return $trip;
+        $trip = TripResource::collection($this->trip::paginate(50));
+        return $trip->response()->setStatusCode(200);
     }
 
     /**
@@ -67,7 +67,9 @@ class TripController extends Controller
         $trip->price = $newPrice;
         $trip->save();
 
-        return response()->json($trip, 201);
+        $tripResource = new TripResource($trip);
+
+        return $tripResource->response()->setStatusCode(201);
     }
 
     /**
@@ -76,7 +78,10 @@ class TripController extends Controller
     public function show($id)
     {
         $trip = $this->trip::findOrFail($id);
-        return $trip;
+
+        $tripResource = new TripResource($trip);
+
+        return $tripResource->response()->setStatusCode(200);
     }
 
     /**
@@ -94,7 +99,9 @@ class TripController extends Controller
     {
         $trip = $this->trip::findOrFail($id);
         $trip->update($request->all());
-        return $trip;
+        $tripResource = new TripResource($trip);
+
+        return $tripResource->response()->setStatusCode(200);
     }
 
     /**
@@ -103,16 +110,6 @@ class TripController extends Controller
     public function destroy($id)
     {
         $this->trip::findOrFail($id)->delete();
-        return 204;
+        return response()->json(['message' => 'deleted successfuly'], 200);
     }
-
-    // public function changePrice(Request $request)
-    // {
-    //     $price = $request->price;
-
-    //     // Assuming $this->trip is an instance of the model representing your trips
-    //     $this->trip->where('dateTime', '>', now())->update(['price' => $price]);
-
-    //     return response()->json(['message' => 'Price updated successfully']);
-    // }
 }

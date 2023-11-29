@@ -13,6 +13,6 @@ class Destination extends Model
 
     public function rides()
     {
-        return $this->belongsToMany(Ride::class);
+        return $this->hasMany(Ride::class);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\Review;
 use Illuminate\Http\Request;
+use App\Http\Resources\Review as ReviewResource;
 
 class ReviewController extends Controller
 {
@@ -20,8 +21,8 @@ class ReviewController extends Controller
      */
     public function index()
     {
-        $reviews = $this->review::with('user')->paginate(20);
-        return $reviews;
+        $reviews = ReviewResource::collection($this->review::paginate(10));
+        return $reviews->response()->setStatusCode(200);
     }
 
     /**
@@ -45,7 +46,10 @@ class ReviewController extends Controller
 
         // travel id known in front end
         $review = Review::create($request->all()+ ['user_id' => auth()->id()]);
-        return $review;
+
+        $reviewResource = new ReviewResource($review);
+
+        return $reviewResource->response()->setStatusCode(201);
     }
 
     /**
@@ -53,8 +57,11 @@ class ReviewController extends Controller
      */
     public function show(string $id)
     {
-        $review = $this->review::with('user')->findOrFail($id);
-        return $review;
+        $review = $this->review::findOrFail($id);
+
+        $reviewResource = new ReviewResource($review);
+
+        return $reviewResource->response()->setStatusCode(200)->header('Additional Header', 'True');
     }
 
     /**
@@ -79,6 +86,6 @@ class ReviewController extends Controller
     public function destroy(string $id)
     {
         $this->review::findOrFail($id)->delete();
-        return 204;
+        return response()->json(['message' => 'deleted successfuly'], 200);
     }
 }

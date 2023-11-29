@@ -13,6 +13,6 @@ class Ride extends Model
 
     public function destination()
     {
-        return $this->hasOne(Destination::class);
+        return $this->belongsTo(Destination::class);
     }
 }

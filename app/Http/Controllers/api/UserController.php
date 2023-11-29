@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\User as UserResource;
 
 class UserController extends Controller
 {
@@ -22,8 +23,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = $this->user::paginate(50);
-        return $users;
+        $users = UserResource::collection($this->user::paginate(50));
+        return $users->response()->setStatusCode(200);
     }
 
     /**
@@ -43,21 +44,21 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
-            // 'address' => 'required',
-            'phone' => 'required',
         ]);
 
-        $user = new $this->user;
-
+        // Create a new User instance
         $user = $this->user::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'address' => $request->address,
-            'phone' => $request->phone,
         ]);
 
-        return $user;
+        // Create a new UserResource instance
+        $userResource = new UserResource($user);
+
+        // Return the transformed data as a JSON response with a 201 status code
+        return $userResource->response()->setStatusCode(201);
     }
 
     /**
@@ -66,7 +67,12 @@ class UserController extends Controller
     public function show(string $id)
     {
         $user = $this->user::findOrFail($id);
-        return $user;
+
+        // Create a new UserResource instance
+        $userResource = new UserResource($user);
+
+        // Return the transformed data as a JSON response with a 201 status code
+        return $userResource->response()->setStatusCode(200);
     }
 
     /**
@@ -85,7 +91,12 @@ class UserController extends Controller
         $user = $this->user::findOrFail($id);
 
         $user->update($request->all());
-        return $user;
+
+        // Create a new UserResource instance
+        $userResource = new UserResource($user);
+
+        // Return the transformed data as a JSON response with a 201 status code
+        return $userResource->response()->setStatusCode(200);
     }
 
     /**
@@ -94,7 +105,7 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         $this->user::findOrFail($id)->delete();
-        return 204;
+        return response()->json(['message' => 'deleted successfuly'], 200);
     }
 
     public function changeCurrency(Request $request, $id)

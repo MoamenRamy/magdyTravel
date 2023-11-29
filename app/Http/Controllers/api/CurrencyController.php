@@ -5,12 +5,10 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\Currency;
 use Illuminate\Http\Request;
-// use App\Traits\ChangeCurrencyTrait;
+use App\Http\Resources\Currency as CurrencyResource;
 
 class CurrencyController extends Controller
 {
-    // use ChangeCurrencyTrait;
-
     public $currency;
 
     public function __construct(Currency $currency)
@@ -22,8 +20,8 @@ class CurrencyController extends Controller
      */
     public function index()
     {
-        $currency = $this->currency::all();
-        return $currency;
+        $currency = CurrencyResource::collection($this->currency::all());
+        return $currency->response()->setStatusCode(200);
     }
 
     /**
@@ -55,7 +53,11 @@ class CurrencyController extends Controller
             'price' => $request->price,
         ]);
 
-        return $currency;
+        // Transform the category model into a resource
+        $currencyResource = new CurrencyResource($currency);
+
+        // Return the transformed data as a JSON response with a 201 status code
+        return $currencyResource->response()->setStatusCode(201);
     }
 
     /**
@@ -64,7 +66,12 @@ class CurrencyController extends Controller
     public function show(string $id)
     {
         $currency = $this->currency::findorFail($id);
-        return $currency;
+
+        // Transform the category model into a resource
+        $currencyResource = new CurrencyResource($currency);
+
+        // Return the transformed data as a JSON response with a 200 status code
+        return $currencyResource->response()->setStatusCode(200)->header('Additional Header', 'True');
     }
 
     /**
@@ -82,7 +89,12 @@ class CurrencyController extends Controller
     {
         $currency = $this->currency::findorFail($id);
         $currency->update($request->all());
-        return $currency;
+
+        // Transform the category model into a resource
+        $currencyResource = new CurrencyResource($currency);
+
+        // Return the transformed data as a JSON response with a 200 status code
+        return $currencyResource->response()->setStatusCode(200);
     }
 
     /**
@@ -91,13 +103,6 @@ class CurrencyController extends Controller
     public function destroy(string $id)
     {
         $this->currency::findOrFail($id)->delete();
-        return 204;
+        return response()->json(['message' => 'deleted successfuly'], 200);
     }
-
-    // test trait
-    // public function change()
-    // {
-    //     $price = $this->changeCurrency(2, 50);
-    //     return $price;
-    // }
 }

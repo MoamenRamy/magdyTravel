@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\Destination;
 use Illuminate\Http\Request;
+use App\Http\Resources\Destination as DestinationResource;
 
 class DestinationController extends Controller
 {
@@ -20,8 +21,8 @@ class DestinationController extends Controller
      */
     public function index()
     {
-        $destinations = $this->destination::paginate(50);
-        return $destinations;
+        $destinations = DestinationResource::collection($this->destination::paginate(50));
+        return $destinations->response()->setStatusCode(200);
     }
 
     /**
@@ -51,7 +52,9 @@ class DestinationController extends Controller
             'price' => $request->price,
         ]);
 
-        return $destination;
+        $destinationResource = new DestinationResource($destination);
+
+        return $destinationResource->response()->setStatusCode(201);
     }
 
     /**
@@ -59,8 +62,8 @@ class DestinationController extends Controller
      */
     public function show(string $id)
     {
-        $destination = $this->destination::findOrFail($id);
-        return $destination;
+        $destination = new DestinationResource($this->destination::findOrFail($id));
+        return $destination->response()->setStatusCode(200)->header('Additional Header', 'True');
     }
 
     /**
@@ -78,7 +81,10 @@ class DestinationController extends Controller
     {
         $destination = $this->destination::findOrFail($id);
         $destination->update($request->all());
-        return $destination;
+
+        $destinationResource = new DestinationResource($destination);
+
+        return $destinationResource->response()->setStatusCode(200);
     }
 
     /**
@@ -87,7 +93,6 @@ class DestinationController extends Controller
     public function destroy(string $id)
     {
         $this->destination::findOrFail($id)->delete();
-        return 204;
-
+        return response()->json(['message' => 'deleted successfuly'], 200);
     }
 }

@@ -8,7 +8,7 @@ use App\Models\Travel;
 use App\Models\UserTravel;
 use Illuminate\Http\Request;
 use App\Traits\ChangeCurrencyTrait;
-
+use App\Http\Resources\UserTravel as UserTravelResource;
 
 class UserTravelController extends Controller
 {
@@ -26,8 +26,8 @@ class UserTravelController extends Controller
      */
     public function index()
     {
-        $rides = $this->userTravel::with('travel')->paginate(50);
-        return $rides;
+        $rides = UserTravelResource::collection($this->userTravel::paginate(20));
+        return $rides->response()->setStatusCode(200);
     }
 
     /**
@@ -55,6 +55,9 @@ class UserTravelController extends Controller
         // change currency and know the symbol that user shows it
         $travel = Travel::findOrFail($request->travel_id);
         $price = $travel->price;
+        $travel->bookedCount += 1;
+        $travel->save();
+
         $currency = Currency::where('code', $request->code)->first();
         $currencyId = $currency->id;
         $newPrice  = $this->changeCurrency($currencyId, $price);
@@ -68,7 +71,9 @@ class UserTravelController extends Controller
             'code' => $request->code
         ]);
 
-        return $userTravel;
+        $userTravelResource = new UserTravelResource($userTravel);
+
+        return $userTravelResource->response()->setStatusCode(201);
     }
 
     /**
@@ -76,8 +81,11 @@ class UserTravelController extends Controller
      */
     public function show(string $id)
     {
-        $userTravel = $this->userTravel::with('travel')->findOrFail($id);
-        return $userTravel;
+        $userTravel = $this->userTravel::findOrFail($id);
+
+        $userTravelResource = new UserTravelResource($userTravel);
+
+        return $userTravelResource->response()->setStatusCode(200);
     }
 
     /**
@@ -95,7 +103,10 @@ class UserTravelController extends Controller
     {
         $userTravel = $this->userTravel::findOrFail($id);
         $userTravel->update($request->all());
-        return $userTravel;
+
+        $userTravelResource = new UserTravelResource($userTravel);
+
+        return $userTravelResource->response()->setStatusCode(200);
     }
 
     /**
@@ -104,7 +115,6 @@ class UserTravelController extends Controller
     public function destroy(string $id)
     {
         $this->userTravel::findOrFail($id)->delete();
-        return 204;
-
+        return response()->json(['message' => 'deleted successfuly'], 200);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\ChangeTripPrice;
 use Illuminate\Http\Request;
+use App\Http\Resources\ChangeTripPrice as ChangeTripPriceResources;
 
 class ChangeTripPriceController extends Controller
 {
@@ -14,25 +15,7 @@ class ChangeTripPriceController extends Controller
     {
         $this->price = $price;
     }
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -44,38 +27,10 @@ class ChangeTripPriceController extends Controller
         $price->price = $request->price;
         $price->save();
 
-        return $price;
-    }
+        // Transform the category model into a resource
+        $priceResource = new ChangeTripPriceResources($price);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(ChangeTripPrice $changeTripPrice)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ChangeTripPrice $changeTripPrice)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, ChangeTripPrice $changeTripPrice)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ChangeTripPrice $changeTripPrice)
-    {
-        //
+        // Return the transformed data as a JSON response with a 200 status code
+        return $priceResource->response()->setStatusCode(201);
     }
 }
