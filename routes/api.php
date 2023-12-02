@@ -29,9 +29,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('/users', UserController::class);
-Route::patch('users/changeCurrency/{id}', [UserController::class, 'changeCurrency']);
+// Route::patch('users/changeCurrency/{id}', [UserController::class, 'changeCurrency']);
+Route::patch('users/adminSet/{id}', [UserController::class, 'changeRoleToAdmin']);
+Route::patch('users/superAdminSet/{id}', [UserController::class, 'changeRoleToSuperAdmin']);
 
 Route::apiResource('/travels', TravelController::class);
+Route::get('/travel/by-category/{categorySlug}', [TravelController::class, 'getByCategorySlug']);
 
 Route::apiResource('/destinations', DestinationController::class);
 

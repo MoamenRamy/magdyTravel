@@ -15,7 +15,10 @@ class UserController extends Controller
 
     public function __construct(User $user)
     {
-        $this->middleware('onceBasic')->only('changeCurrency');
+        $this->middleware('onceBasic')->only('destroy', 'changeRoleToSuperAdmin', 'changeRoleToAdmin');
+        $this->middleware('admin')->only('destroy');
+        $this->middleware('superAdmin')->only('changeRoleToAdmin', 'changeRoleToSuperAdmin');
+
         $this->user = $user;
     }
     /**
@@ -104,16 +107,45 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        $this->user::findOrFail($id)->delete();
+        $user = $this->user::findOrFail($id);
+        $this->authorize('delete', $user);
+        $user->delete();
         return response()->json(['message' => 'deleted successfuly'], 200);
     }
 
-    public function changeCurrency(Request $request, $id)
+    // public function changeCurrency(Request $request, $id)
+    // {
+    //     // auth user -> currency id = $id
+    //     $user = Auth::user();
+    //     $user->currency_id = $id;
+    //     $user->save();
+    //     return $user;
+    // }
+
+    // change role
+    public function changeRoleToAdmin($id)
     {
-        // auth user -> currency id = $id
-        $user = Auth::user();
-        $user->currency_id = $id;
+        $user = $this->user::findOrFail($id);
+        $user->role = 1;
         $user->save();
-        return $user;
+
+        // Create a new UserResource instance
+        $userResource = new UserResource($user);
+
+        // Return the transformed data as a JSON response with a 201 status code
+        return $userResource->response()->setStatusCode(200);
+    }
+
+    public function changeRoleToSuperAdmin($id)
+    {
+        $user = $this->user::findOrFail($id);
+        $user->role = 2;
+        $user->save();
+
+        // Create a new UserResource instance
+        $userResource = new UserResource($user);
+
+        // Return the transformed data as a JSON response with a 201 status code
+        return $userResource->response()->setStatusCode(200);
     }
 }

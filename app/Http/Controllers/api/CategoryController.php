@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Resources\Category as CategoryResource;
+use Illuminate\Support\Str;
+
 
 class CategoryController extends Controller
 {
@@ -13,6 +15,9 @@ class CategoryController extends Controller
 
     public function __construct(Category $category)
     {
+        $this->middleware('onceBasic')->only('store', 'update', 'destroy');
+        $this->middleware('admin')->except('destroy', 'index', 'show');
+        $this->middleware('superAdmin')->only('destroy');
         $this->category = $category;
     }
     /**
@@ -49,7 +54,7 @@ class CategoryController extends Controller
         $category->description = $request->description;
 
         // Generate a slug by concatenating the title and a random number
-        $category->slug = $request->title . '-' . rand(0, 50);
+        $category->slug = Str::slug($request->title);
 
         // Save the category
         $category->save();
@@ -64,9 +69,8 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Category $category)
     {
-        $category = $this->category::findOrFail($id);
         $categoryResource = new CategoryResource($category);
 
         return $categoryResource->response()->setStatusCode(200)->header('Additional Header', 'True');;
@@ -83,6 +87,7 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    // make it with slug
     public function update(Request $request, string $id)
     {
 
@@ -98,6 +103,8 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    // make it with slug
+
     public function destroy(string $id)
     {
         $this->category::findOrFail($id)->delete();

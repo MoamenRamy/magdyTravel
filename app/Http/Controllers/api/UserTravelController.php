@@ -9,6 +9,7 @@ use App\Models\UserTravel;
 use Illuminate\Http\Request;
 use App\Traits\ChangeCurrencyTrait;
 use App\Http\Resources\UserTravel as UserTravelResource;
+use App\Models\User;
 
 class UserTravelController extends Controller
 {
@@ -18,7 +19,8 @@ class UserTravelController extends Controller
 
     public function __construct(UserTravel $userTravel)
     {
-        // $this->middleware('onceBasic')->only('changeCurrency');
+        $this->middleware('onceBasic')->except('store');
+        $this->middleware('admin')->except('store');
         $this->userTravel = $userTravel;
     }
     /**

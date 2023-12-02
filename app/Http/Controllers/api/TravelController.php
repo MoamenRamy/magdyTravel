@@ -7,6 +7,8 @@ use App\Models\Photo;
 use App\Models\Travel;
 use Illuminate\Http\Request;
 use App\Http\Resources\Travel as TravelResource;
+use App\Models\Category;
+use Illuminate\Support\Str;
 
 class TravelController extends Controller
 {
@@ -14,7 +16,9 @@ class TravelController extends Controller
 
     public function __construct(Travel $travel)
     {
-        // $this->middleware('onceBasic')->only('changeCurrency');
+        $this->middleware('onceBasic')->only('store', 'update', 'destroy');
+        $this->middleware('admin')->only('update', 'store');
+        $this->middleware('superAdmin')->only('destroy');
         $this->travel = $travel;
     }
     /**
@@ -55,6 +59,7 @@ class TravelController extends Controller
         $travel = new $this->travel;
 
         $travel->name = $request->name;
+        $travel->slug = Str::slug($request->name);
         $travel->category_id = $request->category_id;
         $travel->description = $request->description;
         $travel->plan = $request->plan;
@@ -62,7 +67,6 @@ class TravelController extends Controller
         $travel->price = $request->price;
         $travel->dateTime = $request->dateTime;
         $travel->period = $request->period;
-        $travel->slug = $travel->name. '-' . rand(0, 50);
         $travel->save();
 
 
@@ -70,7 +74,7 @@ class TravelController extends Controller
         if ($photos) {
             foreach($photos as $photo){
                 $ph = new Photo();
-                $ph->photo = $photo->getClientOriginalName();
+                $ph->photo = $photo->getClientOriginalName(); // + data now
                 $travel->photos()->save($ph);
             }
         } else {
@@ -85,10 +89,8 @@ class TravelController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Travel $travel)
     {
-        $travel = $this->travel::findOrFail($id);
-
         $travelResource = new TravelResource($travel);
 
         return $travelResource->response()->setStatusCode(200);
@@ -122,5 +124,19 @@ class TravelController extends Controller
     {
         $this->travel::findOrFail($id)->delete();
         return response()->json(['message' => 'deleted successfuly'], 200);
+    }
+
+    public function getByCategorySlug($categorySlug)
+    {
+        // Find the Category by slug
+        $category = Category::where('slug', $categorySlug)->firstOrFail();
+
+        // Retrieve travels associated with the category
+        $travels = Travel::where('category_id', $category->id)->get();
+
+        // Use the TravelResource collection method directly
+        $travelResource = TravelResource::collection($travels);
+
+        return $travelResource->response()->setStatusCode(200);
     }
 }

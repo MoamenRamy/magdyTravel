@@ -9,7 +9,13 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $guarded = ['slug'];
+
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     public function travels()
     {

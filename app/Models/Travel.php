@@ -9,7 +9,12 @@ class Travel extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $guarded = ['slug'];
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     public function photos()
     {
@@ -24,5 +29,10 @@ class Travel extends Model
     public function books()
     {
         return $this->hasMany(UserTravel::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

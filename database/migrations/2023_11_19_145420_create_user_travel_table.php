@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('user_travel', function (Blueprint $table) {
             $table->id();
-            // $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('travel_id');
             $table->dateTime('bookDate');
             $table->string('userAddress');
@@ -21,11 +20,6 @@ return new class extends Migration
             $table->decimal('price', 8, 2);
             $table->string('code')->default('USD');
             $table->timestamps();
-
-            // $table->foreign('user_id')
-            // ->references('id')
-            // ->on('users')
-            // ->onDelete('cascade');
 
             $table->foreign('travel_id')
             ->references('id')

@@ -13,6 +13,9 @@ class CurrencyController extends Controller
 
     public function __construct(Currency $currency)
     {
+        $this->middleware('onceBasic')->only('store', 'update', 'destroy');
+        $this->middleware('admin')->except('destroy', 'index', 'show');
+        $this->middleware('superAdmin')->only('destroy');
         $this->currency = $currency;
     }
     /**

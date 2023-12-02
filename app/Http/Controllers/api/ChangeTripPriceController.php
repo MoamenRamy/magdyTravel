@@ -13,6 +13,8 @@ class ChangeTripPriceController extends Controller
 
     public function __construct(ChangeTripPrice $price)
     {
+        $this->middleware('onceBasic');
+        $this->middleware('admin');
         $this->price = $price;
     }
 

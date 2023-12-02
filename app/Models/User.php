@@ -81,4 +81,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Review::class);
     }
+
+    public function isAdmin()
+    {
+        return $this->role >= 1;
+    }
+
+    public function isSuperAdmin()
+    {
+        return $this->role > 1;
+    }
 }
