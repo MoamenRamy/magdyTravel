@@ -49,12 +49,12 @@ class Handler extends ExceptionHandler
             ], 404);
         }
 
-        // else {
-        //     return Response::json([
-        //         'error' => [
-        //             'message' => 'Not supported!',
-        //         ]
-        //         ], 404);
-        // }
+        else {
+            return Response::json([
+                'error' => [
+                    'message' => 'Not supported!',
+                ]
+                ], 404);
+        }
     }
 }

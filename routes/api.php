@@ -28,30 +28,52 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('/users', UserController::class);
-// Route::patch('users/changeCurrency/{id}', [UserController::class, 'changeCurrency']);
-Route::patch('users/adminSet/{id}', [UserController::class, 'changeRoleToAdmin']);
-Route::patch('users/superAdminSet/{id}', [UserController::class, 'changeRoleToSuperAdmin']);
+Route::prefix('/users')->group(function()
+{
+    Route::apiResource('/', UserController::class)->parameters([
+        '' => 'user',
+    ]);
+    Route::patch('/adminSet/{id}', [UserController::class, 'changeRoleToAdmin']);
+    Route::patch('/superAdminSet/{id}', [UserController::class, 'changeRoleToSuperAdmin']);
+    Route::patch('/defaultUser/{id}', [UserController::class, 'changeRoleToDefualtUser']);
+});
+Route::redirect('user', 'users');
 
-Route::apiResource('/travels', TravelController::class);
-Route::get('/travel/by-category/{categorySlug}', [TravelController::class, 'getByCategorySlug']);
+Route::prefix('/travels')->group(function()
+{
+    Route::apiResource('/', TravelController::class)->parameters([
+        '' => 'travel',
+    ]);
+    Route::get('/by-category/{categorySlug}', [TravelController::class, 'getByCategorySlug']);
+});
+Route::redirect('travel', 'travels');
 
 Route::apiResource('/destinations', DestinationController::class);
+Route::redirect('destination', 'destinations');
 
 Route::apiResource('/rides', RideController::class);
+Route::redirect('ride', 'rides');
 
 Route::apiResource('/categories', CategoryController::class);
+Route::redirect('category', 'categories');
 
 Route::apiResource('/reviews', ReviewController::class);
+Route::redirect('review', 'reviews');
 
 Route::apiResource('/currencies', CurrencyController::class);
-Route::get('/change', [CurrencyController::class, 'change']);
+Route::redirect('currency', 'currencies');
 
 Route::apiResource('/booking/travels', UserTravelController::class);
 
-Route::post('/trips/price/change', [ChangeTripPriceController::class, 'store']);
+Route::prefix('/trips')->group(function()
+{
+    Route::post('/price/change', [ChangeTripPriceController::class, 'store']);
+    Route::apiResource('/', TripController::class)->parameters([
+        '' => 'trip',
+    ]);
+});
+Route::redirect('trip', 'trips');
 
-Route::apiResource('/trip', TripController::class);
 
 // Apply middleware in your API routes
 // Route::middleware('auth:api')->get('/your-endpoint', 'YourController@index');

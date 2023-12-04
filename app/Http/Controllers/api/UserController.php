@@ -17,7 +17,7 @@ class UserController extends Controller
     {
         $this->middleware('onceBasic')->only('destroy', 'changeRoleToSuperAdmin', 'changeRoleToAdmin');
         $this->middleware('admin')->only('destroy');
-        $this->middleware('superAdmin')->only('changeRoleToAdmin', 'changeRoleToSuperAdmin');
+        $this->middleware('superAdmin')->only('changeRoleToAdmin', 'changeRoleToSuperAdmin', 'changeRoleToDefualtUser');
 
         $this->user = $user;
     }
@@ -140,6 +140,20 @@ class UserController extends Controller
     {
         $user = $this->user::findOrFail($id);
         $user->role = 2;
+        $user->save();
+
+        // Create a new UserResource instance
+        $userResource = new UserResource($user);
+
+        // Return the transformed data as a JSON response with a 201 status code
+        return $userResource->response()->setStatusCode(200);
+    }
+
+    // function make user role = 0
+    public function changeRoleToDefualtUser($id)
+    {
+        $user = $this->user::findOrFail($id);
+        $user->role = 0;
         $user->save();
 
         // Create a new UserResource instance

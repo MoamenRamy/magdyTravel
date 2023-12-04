@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(DestinationSeeder::class);
         $this->call(RideSeeder::class);
         $this->call(PhotoSeeder::class);
-        $this->call(CarSeeder::class);
         $this->call(ReviewSeeder::class);
         $this->call(UserTravelSeeder::class);
         $this->call(ChangeTripPriceSeeder::class);
