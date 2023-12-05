@@ -17,7 +17,8 @@ class Ride extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'where' => $this->from,
+            'id' => $this->id,
+            'from' => $this->from,
             'to' => $this->to,
             'dateTime' => $this->dateTime,
             'guest' => $this->guest,
