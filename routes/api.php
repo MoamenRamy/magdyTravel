@@ -12,11 +12,13 @@ use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\UserTravelController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
-use Laravel\Fortify\Http\Controllers\ConfirmablePasswordController;
-use Laravel\Fortify\Http\Controllers\NewPasswordController;
-use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
-use Laravel\Fortify\Http\Controllers\RegisteredUserController;
+use App\Http\Controllers\Auth\ApiAuthController;
+// use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+// use Laravel\Fortify\Http\Controllers\ConfirmablePasswordController;
+// use Laravel\Fortify\Http\Controllers\NewPasswordController;
+// use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
+// use Laravel\Fortify\Http\Controllers\RegisteredUserController;
+// use App\Http\Livewire\Auth\Login;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,11 +81,16 @@ Route::prefix('/trips')->group(function()
 });
 Route::redirect('trip', 'trips');
 
-Route::post('/login', [AuthenticatedSessionController::class, 'store']);
-Route::post('/register', [RegisteredUserController::class, 'store']);
-Route::post('/forgot-password', [PasswordResetLinkController::class, 'store']);
-Route::post('/reset-password', [NewPasswordController::class, 'store']);
-Route::post('/user/confirm-password', [ConfirmablePasswordController::class, 'store']);
+// Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+// Route::post('/register', [RegisteredUserController::class, 'store']);
+// Route::post('/forgot-password', [PasswordResetLinkController::class, 'store']);
+// Route::post('/reset-password', [NewPasswordController::class, 'store']);
+// Route::post('/user/confirm-password', [ConfirmablePasswordController::class, 'store']);
+// Route::post('/login', [Login::class, 'authenticate']);
+Route::post('/login', [ApiAuthController::class, 'login']);
+Route::post('/register', [ApiAuthController::class, 'register']);
+Route::post('/forgot-password', [ApiAuthController::class, 'forgotPassword']);
+Route::post('/confirm-password', [ApiAuthController::class, 'confirmPassword']);
 
 
 

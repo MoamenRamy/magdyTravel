@@ -18,7 +18,7 @@ class TripController extends Controller
 
     public function __construct(Trip $trip)
     {
-        $this->middleware('onceBasic')->except('store');
+        $this->middleware('auth:sanctum')->except('store');
         $this->middleware('admin')->except('store');
         $this->trip = $trip;
     }
