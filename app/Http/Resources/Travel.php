@@ -16,6 +16,7 @@ class Travel extends JsonResource
     {
         return [
             'id' => $this->id,
+            'slug' => $this->slug,
             'categoryId' => $this->category_id,
             'name' => $this->name,
             'description' => $this->description,
