@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('rides', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('destination_id');
+            $table->string('name');
             $table->string('from');
             $table->string('to');
             $table->dateTime('dateTime'); // must in feuture
             $table->integer('guest')->default(1);
             $table->string('phoneNumber');
+            $table->string('whatsNumber');
             $table->text('note')->nullable();
             $table->decimal('price', 8, 2);
             $table->string('code')->default('USD');

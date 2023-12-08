@@ -74,7 +74,7 @@ class TravelController extends Controller
         if ($photos) {
             foreach($photos as $photo){
                 $ph = new Photo();
-                $ph->photo = $photo->getClientOriginalName(); // + data now
+                $ph->photo = $photo->getClientOriginalName(); // + data now.
                 $travel->photos()->save($ph);
             }
         } else {

@@ -50,6 +50,7 @@ class TripController extends Controller
             'phone' => 'required',
             'guest' => 'required',
             'code' => 'required',
+            'whatsNumber' => 'required'
         ]);
 
         $trip = new $this->trip;
@@ -67,6 +68,7 @@ class TripController extends Controller
         $trip->code = $request->code;
         $trip->note = $request->note;
         $trip->price = $newPrice;
+        $trip->whatsNumber = $request->whatsNumber;
         $trip->save();
 
         $tripResource = new TripResource($trip);

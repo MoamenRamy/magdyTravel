@@ -17,11 +17,13 @@ class UserTravelFactory extends Factory
     public function definition(): array
     {
         return [
-            // 'user_id' => $this->faker->numberBetween(1, 50),
             'travel_id' => $this->faker->numberBetween(1, 10),
+            'name' => $this->faker->name(),
+            'count' => $this->faker->numberBetween(1, 15),
             'bookDate' => $this->faker->dateTime(),
             'userAddress' => $this->faker->address(),
             'phone' => $this->faker->phoneNumber(),
+            'whatsNumber' => $this->faker->phoneNumber,
             'price' => rand(200, 300) . '.99',
         ];
     }

@@ -46,10 +46,14 @@ class UserTravelController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
+            'travel_id' => 'required',
+            'name' => 'required',
+            'count' => 'required',
             'bookDate' => 'required|date|after:now',
             'userAddress' => 'required',
             'phone' => 'required',
             'code' => 'required',
+            'whatsNumber' => 'required',
         ]);
 
         $userTravel = new $this->userTravel;
@@ -66,11 +70,14 @@ class UserTravelController extends Controller
 
         $userTravel = $this->userTravel::create([
             'travel_id' => $request->travel_id,
+            'name' => $request->name,
+            'count' => $request->count,
             'bookDate' => $request->bookDate,
             'userAddress' => $request->userAddress,
             'phone' => $request->phone,
+            'whatsNumber' => $request->whatsNumber,
             'price' => $newPrice,
-            'code' => $request->code
+            'code' => $request->code,
         ]);
 
         $userTravelResource = new UserTravelResource($userTravel);

@@ -18,11 +18,13 @@ class RideFactory extends Factory
     {
         return [
             'destination_id' => $this->faker->numberBetween(1, 50),
+            'name' => $this->faker->name(),
             'from' => $this->faker->address(),
             'to' => $this->faker->address(),
             'dateTime' => $this->faker->dateTimeBetween('now', '+30 days'),
             'guest' => $this->faker->numberBetween(1, 4),
             'phoneNumber' => $this->faker->phoneNumber,
+            'whatsNumber' => $this->faker->phoneNumber,
             'note' => $this->faker->text(50),
             'price' => rand(200, 300) . '.99',
         ];

@@ -14,9 +14,12 @@ return new class extends Migration
         Schema::create('user_travel', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('travel_id');
+            $table->string('name');
+            $table->integer('count')->default(1);
             $table->dateTime('bookDate');
             $table->string('userAddress');
             $table->string('phone');
+            $table->string('whatsNumber');
             $table->decimal('price', 8, 2);
             $table->string('code')->default('USD');
             $table->timestamps();

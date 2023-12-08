@@ -18,11 +18,13 @@ class Ride extends JsonResource
     {
         return [
             'id' => $this->id,
+            'name' => $this->name,
             'from' => $this->from,
             'to' => $this->to,
             'dateTime' => $this->dateTime,
             'guest' => $this->guest,
             'phone' => $this->phoneNumber,
+            'whatsNumber' => $this->whatsNumber,
             'note' => $this->note,
             'cost' => $this->price,
             'code' => $this->code,

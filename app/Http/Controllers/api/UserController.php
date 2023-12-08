@@ -15,8 +15,8 @@ class UserController extends Controller
 
     public function __construct(User $user)
     {
-        $this->middleware('onceBasic')->only('destroy', 'changeRoleToSuperAdmin', 'changeRoleToAdmin');
-        $this->middleware('admin')->only('destroy');
+        $this->middleware('auth:sanctum')->only('index', 'destroy', 'changeRoleToSuperAdmin', 'changeRoleToAdmin', 'changeRoleToDefualtUser', 'updateProfile', 'update', 'store');
+        $this->middleware('admin')->only('destroy', 'store');
         $this->middleware('superAdmin')->only('changeRoleToAdmin', 'changeRoleToSuperAdmin', 'changeRoleToDefualtUser');
 
         $this->user = $user;
@@ -92,14 +92,16 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         $user = $this->user::findOrFail($id);
+        if (Auth::user()->id == $user->id) {
+            $user->update($request->all());
 
-        $user->update($request->all());
+            // Create a new UserResource instance
+            $userResource = new UserResource($user);
 
-        // Create a new UserResource instance
-        $userResource = new UserResource($user);
-
-        // Return the transformed data as a JSON response with a 201 status code
-        return $userResource->response()->setStatusCode(200);
+            // Return the transformed data as a JSON response with a 201 status code
+            return $userResource->response()->setStatusCode(200);
+        }
+        return response()->json(['message' => 'you not allow to do this'], 200);
     }
 
     /**
@@ -161,5 +163,22 @@ class UserController extends Controller
 
         // Return the transformed data as a JSON response with a 201 status code
         return $userResource->response()->setStatusCode(200);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $request->validate([
+            'profile_photo' => 'required', // image|mimes:jpeg,png,jpg,gif|max:2048
+        ]);
+
+        $user = Auth::user();
+
+        if ($request->hasFile('profile_photo')) {
+            $path = $request->file('profile_photo')->store('profile-photos', 'public');
+            $user->profile_photo_path = $path;
+            $user->save();
+        }
+
+        return response()->json(['success' => 'Profile photo updated successfully.'], 200);
     }
 }

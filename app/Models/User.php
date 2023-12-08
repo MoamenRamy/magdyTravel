@@ -29,7 +29,7 @@ class User extends Authenticatable
         'password',
         'address',
         'phone',
-        'currency_id',
+        'profile_photo_path'
     ];
 
     /**

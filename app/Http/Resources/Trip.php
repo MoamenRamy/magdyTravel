@@ -19,6 +19,7 @@ class Trip extends JsonResource
             'name' => $this->userName,
             'dateTime' => $this->dateTime,
             'phoneNumber' => $this->phone,
+            'whatsNumber' => $this->whatsNumber,
             'guest' => $this->guest,
             'cost' => $this->price,
             'code' => $this->code,

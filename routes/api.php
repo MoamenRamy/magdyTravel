@@ -25,9 +25,9 @@ use App\Http\Controllers\Auth\ApiAuthController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 Route::prefix('/users')->group(function()
 {
@@ -37,6 +37,7 @@ Route::prefix('/users')->group(function()
     Route::patch('/adminSet/{id}', [UserController::class, 'changeRoleToAdmin']);
     Route::patch('/superAdminSet/{id}', [UserController::class, 'changeRoleToSuperAdmin']);
     Route::patch('/defaultUser/{id}', [UserController::class, 'changeRoleToDefualtUser']);
+    Route::post('/update-profile', [UserController::class, 'updateProfile']);
 });
 Route::redirect('user', 'users');
 
@@ -79,7 +80,7 @@ Route::post('/login', [ApiAuthController::class, 'login']);
 Route::post('/register', [ApiAuthController::class, 'register']);
 Route::post('/forgot-password', [ApiAuthController::class, 'forgotPassword']);
 Route::post('/confirm-password', [ApiAuthController::class, 'confirmPassword']);
-Route::post('/logout', [ApiAuthController::class, 'logout'])->middleware('auth:api');
+// Route::post('/logout', [ApiAuthController::class, 'logout'])->middleware('auth:api');
 
 
 

@@ -47,11 +47,13 @@ class RideController extends Controller
     {
         $this->validate($request, [
             'destination_id' => 'required',
+            'name' => 'required',
             'from' => 'required',
             'to' => 'required',
             'dateTime' => 'required|date|after:now',
             'guest' => 'required',
             'phoneNumber' => 'required',
+            'whatsNumber' => 'required',
         ]);
 
         $ride = new $this->ride;
@@ -65,12 +67,14 @@ class RideController extends Controller
 
         $ride = $this->ride::create([
             'destination_id' => $request->destination_id,
+            'name' => $request->name,
             'from' => $request->from,
             'to' => $request->to,
             'dateTime' => $request->dateTime,
             'guest' => $request->guest,
             'price' => $newPrice,
             'phoneNumber' => $request->phoneNumber,
+            'whatsNumber' => $request->whatsNumber,
             'code' => $request->code,
         ]);
 

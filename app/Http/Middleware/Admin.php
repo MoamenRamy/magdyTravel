@@ -22,7 +22,6 @@ class Admin
 
         // User is not authenticated or is not an admin
         // You can handle this case as needed, for example, redirect or return a response
-        return response('Unauthorized', 403);
-
+        return response()->json(['message' => 'Unauthorized'], 403);
     }
 }

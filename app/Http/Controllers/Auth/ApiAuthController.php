@@ -18,6 +18,7 @@ class ApiAuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
+            event(new RevokeUserTokens(auth()->user()->id));
             $user = Auth::user();
             $token = $user->createToken('api-token')->plainTextToken;
 
@@ -78,13 +79,13 @@ class ApiAuthController extends Controller
         return response()->json(['message' => 'Password confirmation failed'], 401);
     }
 
-    public function logout()
-    {
-        // Your logout logic here
+    // public function logout()
+    // {
+    //     // Your logout logic here
 
-        // Dispatch the event to revoke user tokens
-        event(new RevokeUserTokens(auth()->user()->id));
+    //     // Dispatch the event to revoke user tokens
+    //     event(new RevokeUserTokens(auth()->user()->id));
 
-        return response()->json(['message' => 'Logged out successfully']);
-    }
+    //     return response()->json(['message' => 'Logged out successfully']);
+    // }
 }

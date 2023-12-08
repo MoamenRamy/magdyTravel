@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('userName');
             $table->dateTime('dateTime');
             $table->string('phone');
-            $table->integer('guest');
+            $table->string('whatsNumber');
+            $table->integer('guest')->default(1);
             $table->decimal('price', 8, 2);
             $table->string('code')->default('USD');
             $table->text('note')->nullable();
