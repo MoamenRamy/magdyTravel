@@ -13,7 +13,7 @@ class ChangeTripPriceController extends Controller
 
     public function __construct(ChangeTripPrice $price)
     {
-        $this->middleware('onceBasic');
+        $this->middleware('auth:sanctum');
         $this->middleware('admin');
         $this->price = $price;
     }
@@ -34,5 +34,16 @@ class ChangeTripPriceController extends Controller
 
         // Return the transformed data as a JSON response with a 200 status code
         return $priceResource->response()->setStatusCode(201);
+    }
+
+    public function showLastPrice()
+    {
+        $tripPrice = $this->price::latest()->first();
+
+        // Transform the category model into a resource
+        $priceResource = new ChangeTripPriceResources($tripPrice);
+
+        // Return the transformed data as a JSON response with a 200 status code
+        return $priceResource->response()->setStatusCode(200);
     }
 }

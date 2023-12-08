@@ -13,7 +13,7 @@ class DestinationController extends Controller
 
     public function __construct(Destination $destination)
     {
-        $this->middleware('onceBasic')->only('store', 'update', 'destroy');
+        $this->middleware('auth:sanctum')->only('store', 'update', 'destroy');
         $this->middleware('admin')->except('destroy', 'index', 'show');
         $this->middleware('superAdmin')->only('destroy');
         $this->destination = $destination;

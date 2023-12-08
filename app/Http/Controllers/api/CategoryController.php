@@ -15,7 +15,7 @@ class CategoryController extends Controller
 
     public function __construct(Category $category)
     {
-        $this->middleware('onceBasic')->only('store', 'update', 'destroy');
+        $this->middleware('auth:sanctum')->only('store', 'update', 'destroy');
         $this->middleware('admin')->except('destroy', 'index', 'show');
         $this->middleware('superAdmin')->only('destroy');
         $this->category = $category;

@@ -16,7 +16,7 @@ class TravelController extends Controller
 
     public function __construct(Travel $travel)
     {
-        $this->middleware('onceBasic')->only('store', 'update', 'destroy');
+        $this->middleware('auth:sanctum')->only('store', 'update', 'destroy');
         $this->middleware('admin')->only('update', 'store');
         $this->middleware('superAdmin')->only('destroy');
         $this->travel = $travel;

@@ -70,6 +70,7 @@ Route::apiResource('/booking/travels', UserTravelController::class);
 Route::prefix('/trips')->group(function()
 {
     Route::post('/price/change', [ChangeTripPriceController::class, 'store']);
+    Route::get('/price/show', [ChangeTripPriceController::class, 'showLastPrice']);
     Route::apiResource('/', TripController::class)->parameters([
         '' => 'trip',
     ]);

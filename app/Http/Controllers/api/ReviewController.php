@@ -13,7 +13,7 @@ class ReviewController extends Controller
 
     public function __construct(Review $review)
     {
-        $this->middleware('onceBasic')->only('store', 'update', 'destroy');
+        $this->middleware('auth:sanctum')->only('store', 'update', 'destroy');
         $this->middleware('superAdmin')->only('destroy');
         $this->middleware('admin')->only('update');
         $this->review = $review;

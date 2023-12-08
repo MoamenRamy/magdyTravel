@@ -18,7 +18,7 @@ class RideController extends Controller
 
     public function __construct(Ride $ride)
     {
-        $this->middleware('onceBasic')->only('update', 'destroy');
+        $this->middleware('auth:sanctum')->only('update', 'destroy');
         $this->middleware('admin')->only('update');
         $this->middleware('superAdmin')->only('destroy');
         $this->ride = $ride;

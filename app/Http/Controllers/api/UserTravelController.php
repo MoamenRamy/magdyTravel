@@ -19,7 +19,7 @@ class UserTravelController extends Controller
 
     public function __construct(UserTravel $userTravel)
     {
-        $this->middleware('onceBasic')->except('store');
+        $this->middleware('auth:sanctum')->except('store');
         $this->middleware('admin')->except('store');
         $this->userTravel = $userTravel;
     }
