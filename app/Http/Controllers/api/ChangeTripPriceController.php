@@ -14,7 +14,7 @@ class ChangeTripPriceController extends Controller
     public function __construct(ChangeTripPrice $price)
     {
         $this->middleware('auth:sanctum');
-        $this->middleware('admin');
+        $this->middleware('admin')->only('store');
         $this->price = $price;
     }
 
