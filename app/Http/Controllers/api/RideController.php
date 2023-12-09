@@ -28,7 +28,7 @@ class RideController extends Controller
      */
     public function index()
     {
-        $rides = RideResource::collection($this->ride::paginate(20));
+        $rides = RideResource::collection($this->ride::paginate(12));
         return $rides->response()->setStatusCode(200);
     }
 

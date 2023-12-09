@@ -26,7 +26,7 @@ class TravelController extends Controller
      */
     public function index()
     {
-        $travel = TravelResource::collection($this->travel::paginate(10));
+        $travel = TravelResource::collection($this->travel::paginate(12));
         return $travel->response()->setStatusCode(200);
     }
 

@@ -23,7 +23,7 @@ class DestinationController extends Controller
      */
     public function index()
     {
-        $destinations = DestinationResource::collection($this->destination::paginate(50));
+        $destinations = DestinationResource::collection($this->destination::paginate(12));
         return $destinations->response()->setStatusCode(200);
     }
 

@@ -26,7 +26,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = UserResource::collection($this->user::paginate(50));
+        $users = UserResource::collection($this->user::paginate(12));
         return $users->response()->setStatusCode(200);
     }
 

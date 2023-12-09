@@ -28,7 +28,7 @@ class UserTravelController extends Controller
      */
     public function index()
     {
-        $rides = UserTravelResource::collection($this->userTravel::paginate(20));
+        $rides = UserTravelResource::collection($this->userTravel::paginate(12));
         return $rides->response()->setStatusCode(200);
     }
 
