@@ -79,8 +79,8 @@ Route::redirect('trip', 'trips');
 
 Route::post('/login', [ApiAuthController::class, 'login']);
 Route::post('/register', [ApiAuthController::class, 'register']);
-Route::post('/forgot-password', [ApiAuthController::class, 'forgotPassword']);
 Route::post('/confirm-password', [ApiAuthController::class, 'confirmPassword']);
+// Route::post('/forgot-password', [ApiAuthController::class, 'forgotPassword']);
 // Route::post('/logout', [ApiAuthController::class, 'logout'])->middleware('auth:api');
 
 

@@ -49,18 +49,18 @@ class ApiAuthController extends Controller
         return response()->json(['token' => $token]);
     }
 
-    public function forgotPassword(Request $request)
-    {
-        $request->validate(['email' => 'required|email']);
+    // public function forgotPassword(Request $request)
+    // {
+    //     $request->validate(['email' => 'required|email']);
 
-        $status = \Password::sendResetLink(
-            $request->only('email')
-        );
+    //     $status = \Password::sendResetLink(
+    //         $request->only('email')
+    //     );
 
-        return $status === \Password::RESET_LINK_SENT
-            ? response()->json(['message' => __($status)])
-            : response()->json(['message' => __($status)], 400);
-    }
+    //     return $status === \Password::RESET_LINK_SENT
+    //         ? response()->json(['message' => __($status)])
+    //         : response()->json(['message' => __($status)], 400);
+    // }
 
     public function confirmPassword(Request $request)
     {

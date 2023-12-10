@@ -51,7 +51,6 @@ class TravelController extends Controller
             'plan' => 'required',
             'address' => 'required',
             'price' => 'required',
-            'dateTime' => 'required|date|after:now',
             'period' => 'required',
             'photos' => 'required',
         ]);
@@ -65,8 +64,13 @@ class TravelController extends Controller
         $travel->plan = $request->plan;
         $travel->address = $request->address;
         $travel->price = $request->price;
-        $travel->dateTime = $request->dateTime;
         $travel->period = $request->period;
+        if ($request->has('dateTime')){
+            $this->validate($request, [
+                'dateTime' => 'required|date|after:now',
+            ]);
+            $travel->dateTime = $request->dateTime;
+        }
         $travel->save();
 
 
