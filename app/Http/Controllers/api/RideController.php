@@ -20,7 +20,7 @@ class RideController extends Controller
     {
         $this->middleware('auth:sanctum')->only('update', 'destroy');
         $this->middleware('admin')->only('update');
-        $this->middleware('superAdmin')->only('destroy');
+        // $this->middleware('superAdmin')->only('destroy');
         $this->ride = $ride;
     }
     /**

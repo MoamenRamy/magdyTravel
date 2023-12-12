@@ -26,7 +26,7 @@ class TravelController extends Controller
      */
     public function index()
     {
-        $travel = TravelResource::collection($this->travel::paginate(12));
+        $travel = TravelResource::collection($this->travel::with('photos')->paginate(12));
         return $travel->response()->setStatusCode(200);
     }
 
@@ -76,16 +76,26 @@ class TravelController extends Controller
 
         $photos = $request->file('photos');
         if ($photos) {
-            foreach($photos as $photo){
+            foreach ($photos as $photo) {
+                // Generate a unique name for each file
+                $uniqueFileName = uniqid() . '_' . $photo->getClientOriginalName();
+
+                // Move the file to the storage location (e.g., 'public/photos')
+                $photo->storeAs('public/photos', $uniqueFileName);
+
+                // Create a new Photo model instance
                 $ph = new Photo();
-                $ph->photo = $photo->getClientOriginalName(); // + data now.
+
+                // Save the unique file name to the 'photo' attribute
+                $ph->photo = $uniqueFileName;
+
+                // Associate the photo with the travel
                 $travel->photos()->save($ph);
             }
-        }
         //  else {
         //     return 204;
         //  }
-
+        }
         $travelResource = new TravelResource($travel);
 
         return $travelResource->response()->setStatusCode(201);
@@ -96,7 +106,7 @@ class TravelController extends Controller
      */
     public function show(Travel $travel)
     {
-        $travelResource = new TravelResource($travel);
+        $travelResource = new TravelResource($this->travel::with('photos')->find($travel->id));
 
         return $travelResource->response()->setStatusCode(200);
     }
@@ -116,17 +126,6 @@ class TravelController extends Controller
     {
         $travel = $this->travel::findOrFail($id);
         $travel->update($request->all());
-
-        $photos = $request->file('photos');
-        if ($photos) {
-            foreach($photos as $photo){
-                $ph = new Photo();
-                $ph->photo = $photo->getClientOriginalName(); // + data now.
-                $travel->photos()->save($ph);
-            }
-        } else {
-            return 204;
-        }
 
         $travelResource = new TravelResource($travel);
 
@@ -155,4 +154,40 @@ class TravelController extends Controller
 
         return $travelResource->response()->setStatusCode(200);
     }
+
+    public function addPhotos(Request $request, $id)
+    {
+        $travel = $this->travel::findOrFail($id);
+
+        $photos = $request->file('photos');
+        if ($photos) {
+            foreach ($photos as $photo) {
+                // Generate a unique name for each file
+                $uniqueFileName = uniqid() . '_' . $photo->getClientOriginalName();
+
+                // Move the file to the storage location (e.g., 'public/photos')
+                $photo->storeAs('public/photos', $uniqueFileName);
+
+                // Create a new Photo model instance
+                $ph = new Photo();
+
+                // Save the unique file name to the 'photo' attribute
+                $ph->photo = $uniqueFileName;
+
+                // Associate the photo with the travel
+                $travel->photos()->save($ph);
+
+                $travelResource = new TravelResource($travel);
+
+                return $travelResource->response()->setStatusCode(201);
+            }
+
+            // Return a success response if photos are processed
+            return response()->json(['message' => 'Photos added successfully'], 200);
+        } else {
+            // Return a bad request response if no photos are provided
+            return response()->json(['message' => 'Bad Request: No photos provided'], 400);
+        }
+    }
+
 }

@@ -110,7 +110,7 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         $user = $this->user::findOrFail($id);
-        $this->authorize('delete', $user);
+        // $this->authorize('delete', $user);
         $user->delete();
         return response()->json(['message' => 'deleted successfuly'], 200);
     }

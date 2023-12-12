@@ -47,6 +47,7 @@ Route::prefix('/travels')->group(function()
         '' => 'travel',
     ]);
     Route::get('/by-category/{categorySlug}', [TravelController::class, 'getByCategorySlug']);
+    Route::post('/{id}/addPhotos', [TravelController::class, 'addPhotos']);
 });
 Route::redirect('travel', 'travels');
 
