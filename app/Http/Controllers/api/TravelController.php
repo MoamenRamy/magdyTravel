@@ -81,9 +81,10 @@ class TravelController extends Controller
                 $ph->photo = $photo->getClientOriginalName(); // + data now.
                 $travel->photos()->save($ph);
             }
-        } else {
-            return 204;
         }
+        //  else {
+        //     return 204;
+        //  }
 
         $travelResource = new TravelResource($travel);
 
@@ -115,6 +116,17 @@ class TravelController extends Controller
     {
         $travel = $this->travel::findOrFail($id);
         $travel->update($request->all());
+
+        $photos = $request->file('photos');
+        if ($photos) {
+            foreach($photos as $photo){
+                $ph = new Photo();
+                $ph->photo = $photo->getClientOriginalName(); // + data now.
+                $travel->photos()->save($ph);
+            }
+        } else {
+            return 204;
+        }
 
         $travelResource = new TravelResource($travel);
 

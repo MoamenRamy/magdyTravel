@@ -46,7 +46,7 @@ class ApiAuthController extends Controller
 
         $token = $user->createToken('api-token')->plainTextToken;
 
-        return response()->json(['token' => $token]);
+        return response()->json(['token' => $token ,'user_id' => $user->id]);
     }
 
     // public function forgotPassword(Request $request)

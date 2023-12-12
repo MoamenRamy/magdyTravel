@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\DestinationController;
 use App\Http\Controllers\api\CategoryController;
 use App\Http\Controllers\api\ChangeTripPriceController;
@@ -10,8 +12,6 @@ use App\Http\Controllers\api\TravelController;
 use App\Http\Controllers\api\TripController;
 use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\UserTravelController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\ApiAuthController;
 
 /*
@@ -20,14 +20,14 @@ use App\Http\Controllers\Auth\ApiAuthController;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
+    return $request->user();
+});
 
 Route::prefix('/users')->group(function()
 {
@@ -79,15 +79,12 @@ Route::redirect('trip', 'trips');
 
 Route::post('/login', [ApiAuthController::class, 'login']);
 Route::post('/register', [ApiAuthController::class, 'register']);
-Route::post('/confirm-password', [ApiAuthController::class, 'confirmPassword']);
+// Route::post('/confirm-password', [ApiAuthController::class, 'confirmPassword']);
 // Route::post('/forgot-password', [ApiAuthController::class, 'forgotPassword']);
 // Route::post('/logout', [ApiAuthController::class, 'logout'])->middleware('auth:api');
 
+// require __DIR__.'/auth.php';
 
-
-
-// Apply middleware in your API routes
-// Route::middleware('auth:api')->get('/your-endpoint', 'YourController@index');
-
+// Route::post('/register', [RegisteredUserController::class, 'store'])->middleware('auth:sanctum');
 
 
