@@ -177,9 +177,9 @@ class TravelController extends Controller
                 // Associate the photo with the travel
                 $travel->photos()->save($ph);
 
-                $travelResource = new TravelResource($travel);
+                // $travelResource = new TravelResource($travel);
 
-                return $travelResource->response()->setStatusCode(201);
+                // return $travelResource->response()->setStatusCode(201);
             }
 
             // Return a success response if photos are processed

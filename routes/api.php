@@ -6,6 +6,7 @@ use App\Http\Controllers\api\DestinationController;
 use App\Http\Controllers\api\CategoryController;
 use App\Http\Controllers\api\ChangeTripPriceController;
 use App\Http\Controllers\api\CurrencyController;
+use App\Http\Controllers\api\PhotoController;
 use App\Http\Controllers\api\ReviewController;
 use App\Http\Controllers\api\RideController;
 use App\Http\Controllers\api\TravelController;
@@ -50,6 +51,8 @@ Route::prefix('/travels')->group(function()
     Route::post('/{id}/addPhotos', [TravelController::class, 'addPhotos']);
 });
 Route::redirect('travel', 'travels');
+
+Route::delete('/photos/{id}', [PhotoController::class, 'deletePhoto']);
 
 Route::apiResource('/destinations', DestinationController::class);
 Route::redirect('destination', 'destinations');

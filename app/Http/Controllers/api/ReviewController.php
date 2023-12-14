@@ -23,7 +23,7 @@ class ReviewController extends Controller
      */
     public function index()
     {
-        $reviews = ReviewResource::collection($this->review::paginate(12));
+        $reviews = ReviewResource::collection($this->review::paginate(50));
         return $reviews->response()->setStatusCode(200);
     }
 
