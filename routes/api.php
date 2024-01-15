@@ -30,29 +30,38 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('/users')->group(function()
-{
-    Route::apiResource('/', UserController::class)->parameters([
-        '' => 'user',
-    ]);
-    Route::patch('/adminSet/{id}', [UserController::class, 'changeRoleToAdmin']);
-    Route::patch('/superAdminSet/{id}', [UserController::class, 'changeRoleToSuperAdmin']);
-    Route::patch('/defaultUser/{id}', [UserController::class, 'changeRoleToDefualtUser']);
-    Route::post('/update-profile', [UserController::class, 'updateProfile']);
-});
+// Route::prefix('/users')->group(function()
+// {
+//     Route::apiResource('/', UserController::class)->parameters([
+//         '' => 'user',
+//     ]);
+//     Route::patch('/adminSet/{id}', [UserController::class, 'changeRoleToAdmin']);
+//     Route::patch('/superAdminSet/{id}', [UserController::class, 'changeRoleToSuperAdmin']);
+//     Route::patch('/defaultUser/{id}', [UserController::class, 'changeRoleToDefualtUser']);
+//     Route::post('/update-profile', [UserController::class, 'updateProfile']);
+// });
+
+Route::apiResource('/users', UserController::class);
+Route::patch('users/adminSet/{id}', [UserController::class, 'changeRoleToAdmin']);
+Route::patch('users/superAdminSet/{id}', [UserController::class, 'changeRoleToSuperAdmin']);
+Route::patch('users/defaultUser/{id}', [UserController::class, 'changeRoleToDefualtUser']);
+Route::post('users/update-profile', [UserController::class, 'updateProfile']);
 Route::redirect('user', 'users');
 
-Route::prefix('/travels')->group(function()
-{
-    Route::apiResource('/', TravelController::class)->parameters([
-        '' => 'travel',
-    ]);
-    Route::get('/by-category/{categorySlug}', [TravelController::class, 'getByCategorySlug']);
-    Route::post('/{id}/addPhotos', [TravelController::class, 'addPhotos']);
-});
-Route::redirect('travel', 'travels');
+// Route::prefix('/travels')->group(function()
+// {
+//     Route::apiResource('/', TravelController::class)->parameters([
+//         '' => 'travel',
+//     ]);
+//     Route::get('/by-category/{categorySlug}', [TravelController::class, 'getByCategorySlug']);
+//     Route::post('/{id}/addPhotos', [TravelController::class, 'addPhotos']);
+// });
 
-Route::delete('/photos/{id}', [PhotoController::class, 'deletePhoto']);
+Route::apiResource('/travels', TravelController::class);
+Route::get('travels/by-category/{categorySlug}', [TravelController::class, 'getByCategorySlug']);
+Route::post('travels/{id}/addPhotos', [TravelController::class, 'addPhotos']);
+Route::delete('travels/photos/{id}', [PhotoController::class, 'deletePhoto']);
+Route::redirect('travel', 'travels');
 
 Route::apiResource('/destinations', DestinationController::class);
 Route::redirect('destination', 'destinations');
@@ -69,16 +78,19 @@ Route::redirect('review', 'reviews');
 Route::apiResource('/currencies', CurrencyController::class);
 Route::redirect('currency', 'currencies');
 
-Route::apiResource('/booking/travels', UserTravelController::class);
+Route::apiResource('/booking/travel', UserTravelController::class);
 
-Route::prefix('/trips')->group(function()
-{
-    Route::post('/price/change', [ChangeTripPriceController::class, 'store']);
-    Route::get('/price/show', [ChangeTripPriceController::class, 'showLastPrice']);
-    Route::apiResource('/', TripController::class)->parameters([
-        '' => 'trip',
-    ]);
-});
+// Route::prefix('/trips')->group(function()
+// {
+//     Route::post('/price/change', [ChangeTripPriceController::class, 'store']);
+//     Route::get('/price/show', [ChangeTripPriceController::class, 'showLastPrice']);
+//     Route::apiResource('/', TripController::class)->parameters([
+//         '' => 'trip',
+//     ]);
+// });
+Route::apiResource('/trips', TripController::class);
+Route::post('trips/price/change', [ChangeTripPriceController::class, 'store']);
+Route::get('trips/price/show', [ChangeTripPriceController::class, 'showLastPrice']);
 Route::redirect('trip', 'trips');
 
 Route::post('/login', [ApiAuthController::class, 'login']);

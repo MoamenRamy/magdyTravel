@@ -76,7 +76,7 @@ class UserTravelController extends Controller
             'userAddress' => $request->userAddress,
             'phone' => $request->phone,
             'whatsNumber' => $request->whatsNumber,
-            'price' => $newPrice,
+            'price' => $newPrice * $request->count,
             'code' => $request->code,
         ]);
 
