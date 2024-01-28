@@ -22,7 +22,7 @@ class ApiAuthController extends Controller
             $user = Auth::user();
             $token = $user->createToken('api-token')->plainTextToken;
 
-            return response()->json(['token' => $token ,'user_id' => $user->id]);
+            return response()->json(['token' => $token ,'user_id' => $user->id, 'role' => $user->role]);
         }
 
         return response()->json(['message' => 'Invalid credentials'], 401);

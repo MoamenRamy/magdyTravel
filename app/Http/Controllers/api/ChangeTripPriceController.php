@@ -13,7 +13,7 @@ class ChangeTripPriceController extends Controller
 
     public function __construct(ChangeTripPrice $price)
     {
-        $this->middleware('auth:sanctum');
+        $this->middleware('auth:sanctum')->except('showLastPrice');
         $this->middleware('admin')->only('store');
         $this->price = $price;
     }
@@ -21,7 +21,7 @@ class ChangeTripPriceController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'price' => 'required|integer',
+            'price' => 'required',
         ]);
 
         $price = new $this->price;

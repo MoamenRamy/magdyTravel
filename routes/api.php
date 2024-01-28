@@ -58,12 +58,14 @@ Route::redirect('user', 'users');
 // });
 
 Route::apiResource('/travels', TravelController::class);
+Route::get('travel/all', [TravelController::class, 'indexAll']);
 Route::get('travels/by-category/{categorySlug}', [TravelController::class, 'getByCategorySlug']);
 Route::post('travels/{id}/addPhotos', [TravelController::class, 'addPhotos']);
 Route::delete('travels/photos/{id}', [PhotoController::class, 'deletePhoto']);
 Route::redirect('travel', 'travels');
 
 Route::apiResource('/destinations', DestinationController::class);
+Route::get('/destination/all', [DestinationController::class, 'indexAll']);
 Route::redirect('destination', 'destinations');
 
 Route::apiResource('/rides', RideController::class);

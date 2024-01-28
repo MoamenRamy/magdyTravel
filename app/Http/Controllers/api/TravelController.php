@@ -30,6 +30,13 @@ class TravelController extends Controller
         return $travel->response()->setStatusCode(200);
     }
 
+
+    public function indexAll()
+    {
+        $travel = TravelResource::collection($this->travel::all());
+        return $travel->response()->setStatusCode(200);
+    }
+
     /**
      * Show the form for creating a new resource.
      */

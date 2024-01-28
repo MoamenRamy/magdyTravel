@@ -14,7 +14,7 @@ class DestinationController extends Controller
     public function __construct(Destination $destination)
     {
         $this->middleware('auth:sanctum')->only('store', 'update', 'destroy');
-        $this->middleware('admin')->except('destroy', 'index', 'show');
+        $this->middleware('admin')->except('destroy', 'index', 'show', 'indexAll');
         $this->middleware('superAdmin')->only('destroy');
         $this->destination = $destination;
     }
@@ -24,6 +24,12 @@ class DestinationController extends Controller
     public function index()
     {
         $destinations = DestinationResource::collection($this->destination::paginate(12));
+        return $destinations->response()->setStatusCode(200);
+    }
+
+    public function indexAll()
+    {
+        $destinations = DestinationResource::collection($this->destination::all());
         return $destinations->response()->setStatusCode(200);
     }
 
