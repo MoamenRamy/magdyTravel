@@ -67,7 +67,7 @@ class TripController extends Controller
         $trip->guest = $request->guest;
         $trip->code = $request->code;
         $trip->note = $request->note;
-        $trip->price = $newPrice;
+        $trip->price = $newPrice * $request->guest;
         $trip->whatsNumber = $request->whatsNumber;
         $trip->save();
 
