@@ -71,7 +71,7 @@ class DestinationController extends Controller
     public function show(string $id)
     {
         $destination = new DestinationResource($this->destination::findOrFail($id));
-        return $destination->response()->setStatusCode(200)->header('Additional Header', 'True');
+        return $destination->response()->setStatusCode(200);
     }
 
     /**

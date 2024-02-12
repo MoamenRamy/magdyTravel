@@ -27,7 +27,7 @@ class TripController extends Controller
      */
     public function index()
     {
-        $trip = TripResource::collection($this->trip::paginate(12));
+        $trip = TripResource::collection($this->trip::orderBy('created_at', 'desc')->paginate(12));
         return $trip->response()->setStatusCode(200);
     }
 

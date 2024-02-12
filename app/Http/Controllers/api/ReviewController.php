@@ -63,7 +63,7 @@ class ReviewController extends Controller
 
         $reviewResource = new ReviewResource($review);
 
-        return $reviewResource->response()->setStatusCode(200)->header('Additional Header', 'True');
+        return $reviewResource->response()->setStatusCode(200);
     }
 
     /**

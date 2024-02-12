@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Resources\Category as CategoryResource;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 
 class CategoryController extends Controller
@@ -15,7 +16,7 @@ class CategoryController extends Controller
 
     public function __construct(Category $category)
     {
-        $this->middleware('auth:sanctum')->only('store', 'update', 'destroy');
+        $this->middleware('auth:sanctum')->only('store', 'update', 'destroy', 'updateCategoryPhoto');
         $this->middleware('admin')->except('destroy', 'index', 'show');
         $this->middleware('superAdmin')->only('destroy');
         $this->category = $category;
@@ -53,6 +54,11 @@ class CategoryController extends Controller
         $category->title = $request->title;
         $category->description = $request->description;
 
+        if ($request->hasFile('category_photo')) {
+            $path = $request->file('category_photo')->store('category-photo', 'public');
+            $category->photo = $path;
+        }
+
         // Generate a slug by concatenating the title and a random number
         $category->slug = Str::slug($request->title);
 
@@ -73,7 +79,7 @@ class CategoryController extends Controller
     {
         $categoryResource = new CategoryResource($category);
 
-        return $categoryResource->response()->setStatusCode(200)->header('Additional Header', 'True');;
+        return $categoryResource->response()->setStatusCode(200);
     }
 
     /**
@@ -90,10 +96,17 @@ class CategoryController extends Controller
     // make it with slug
     public function update(Request $request, string $id)
     {
-
         $category = $this->category::findOrFail($id);
 
-        $category->update($request->all());
+        $this->validate($request, [
+            'title' => 'required',
+            'description' => 'required',
+        ]);
+
+        $category->title = $request->title;
+        $category->description = $request->description;
+
+        $category->save();
 
         $categoryResource = new CategoryResource($category);
 
@@ -110,4 +123,29 @@ class CategoryController extends Controller
         $this->category::findOrFail($id)->delete();
         return response()->json(['message' => 'deleted successfuly'], 200);
     }
+
+    // public function updateCategoryPhoto(Request $request ,$id)
+    // {
+    //     $category = $this->category::findOrFail($id);
+
+    //     // Validate file input
+    //     $request->validate([
+    //         'category_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+    //     ]);
+
+    //     // Handle existing photo deletion
+    //     if ($category->photo) {
+    //         Storage::disk('public')->delete($category->photo);
+    //     }
+
+    //     // Store the new photo
+    //     $path = $request->file('category_photo')->store('category-photo', 'public');
+
+    //     // Update category photo attribute
+    //     $category->photo = $path;
+    //     $category->update();
+
+    //     return response()->json(['success' => 'Category photo updated successfully.', 'path' => $path], 200);
+    // }
 }
+

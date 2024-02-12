@@ -17,7 +17,6 @@ class Travel extends JsonResource
         return [
             'id' => $this->id,
             'slug' => $this->slug,
-            'categoryId' => $this->category_id,
             'name' => $this->name,
             'description' => $this->description,
             'plan' => $this->plan,
@@ -27,6 +26,7 @@ class Travel extends JsonResource
             'booked' => $this->bookedCount,
             'period' => $this->period,
             'imageUrls' => Photo::collection($this->photos),
+            'category' => new Category($this->category),
         ];
     }
 }

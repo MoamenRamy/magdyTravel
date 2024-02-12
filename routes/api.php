@@ -72,6 +72,7 @@ Route::apiResource('/rides', RideController::class);
 Route::redirect('ride', 'rides');
 
 Route::apiResource('/categories', CategoryController::class);
+// Route::patch('/categoriesUpdate/{id}', [CategoryController::class, 'updateCategoryPhoto']);
 Route::redirect('category', 'categories');
 
 Route::apiResource('/reviews', ReviewController::class);

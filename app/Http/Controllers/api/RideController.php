@@ -28,7 +28,7 @@ class RideController extends Controller
      */
     public function index()
     {
-        $rides = RideResource::collection($this->ride::paginate(12));
+        $rides = RideResource::collection($this->ride::orderBy('created_at', 'desc')->paginate(12));
         return $rides->response()->setStatusCode(200);
     }
 
@@ -72,7 +72,7 @@ class RideController extends Controller
             'to' => $request->to,
             'dateTime' => $request->dateTime,
             'guest' => $request->guest,
-            'price' => $newPrice,
+            'price' => $newPrice * $request->guest,
             'phoneNumber' => $request->phoneNumber,
             'whatsNumber' => $request->whatsNumber,
             'code' => $request->code,
@@ -94,7 +94,7 @@ class RideController extends Controller
 
         $rideResource = new RideResource($ride);
 
-        return $rideResource->response()->setStatusCode(200)->header('Additional Header', 'True');
+        return $rideResource->response()->setStatusCode(200);
     }
 
     /**

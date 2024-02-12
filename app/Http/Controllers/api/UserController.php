@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\User as UserResource;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -174,11 +175,14 @@ class UserController extends Controller
         $user = Auth::user();
 
         if ($request->hasFile('profile_photo')) {
+            if ($user->profile_photo_path) {
+                Storage::disk('public')->delete($user->profile_photo_path);
+            }
             $path = $request->file('profile_photo')->store('profile-photos', 'public');
             $user->profile_photo_path = $path;
             $user->save();
         }
 
-        return response()->json(['success' => 'Profile photo updated successfully.'], 200);
+        return response()->json(['success' => 'Profile photo updated successfully.', 'path' => $path], 200);
     }
 }

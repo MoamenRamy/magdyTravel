@@ -74,7 +74,7 @@ class CurrencyController extends Controller
         $currencyResource = new CurrencyResource($currency);
 
         // Return the transformed data as a JSON response with a 200 status code
-        return $currencyResource->response()->setStatusCode(200)->header('Additional Header', 'True');
+        return $currencyResource->response()->setStatusCode(200);
     }
 
     /**
