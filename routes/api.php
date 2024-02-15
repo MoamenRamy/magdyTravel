@@ -72,7 +72,7 @@ Route::apiResource('/rides', RideController::class);
 Route::redirect('ride', 'rides');
 
 Route::apiResource('/categories', CategoryController::class);
-// Route::patch('/categoriesUpdate/{id}', [CategoryController::class, 'updateCategoryPhoto']);
+Route::post('/category-photo-update', [CategoryController::class, 'updateCategoryPhoto']);
 Route::redirect('category', 'categories');
 
 Route::apiResource('/reviews', ReviewController::class);
@@ -95,6 +95,7 @@ Route::apiResource('/trips', TripController::class);
 Route::post('trips/price/change', [ChangeTripPriceController::class, 'store']);
 Route::get('trips/price/show', [ChangeTripPriceController::class, 'showLastPrice']);
 Route::redirect('trip', 'trips');
+
 
 Route::post('/login', [ApiAuthController::class, 'login']);
 Route::post('/register', [ApiAuthController::class, 'register']);

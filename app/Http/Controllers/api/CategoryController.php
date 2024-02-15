@@ -47,6 +47,7 @@ class CategoryController extends Controller
         $this->validate($request, [
             'title' => ['required', 'string'],
             'description' => ['required', 'string'],
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         // Create a new category and assign the values from the request
@@ -54,8 +55,8 @@ class CategoryController extends Controller
         $category->title = $request->title;
         $category->description = $request->description;
 
-        if ($request->hasFile('category_photo')) {
-            $path = $request->file('category_photo')->store('category-photo', 'public');
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('category-photo', 'public');
             $category->photo = $path;
         }
 
@@ -124,28 +125,29 @@ class CategoryController extends Controller
         return response()->json(['message' => 'deleted successfuly'], 200);
     }
 
-    // public function updateCategoryPhoto(Request $request ,$id)
-    // {
-    //     $category = $this->category::findOrFail($id);
+    public function updateCategoryPhoto(Request $request)
+    {
+        // Validate file input
+        $request->validate([
+            'category_id' => 'required',
+            // 'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-    //     // Validate file input
-    //     $request->validate([
-    //         'category_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-    //     ]);
+        $category = $this->category::findOrFail($request->category_id);
 
-    //     // Handle existing photo deletion
-    //     if ($category->photo) {
-    //         Storage::disk('public')->delete($category->photo);
-    //     }
+        // Handle existing photo deletion
+        if ($category->photo) {
+            Storage::disk('public')->delete($category->photo);
+        }
 
-    //     // Store the new photo
-    //     $path = $request->file('category_photo')->store('category-photo', 'public');
+        // Store the new photo
+        $path = $request->file('photo')->store('category-photo', 'public');
 
-    //     // Update category photo attribute
-    //     $category->photo = $path;
-    //     $category->update();
+        // Update category photo attribute
+        $category->photo = $path;
+        $category->update();
 
-    //     return response()->json(['success' => 'Category photo updated successfully.', 'path' => $path], 200);
-    // }
+        return response()->json(['success' => 'Category photo updated successfully.', 'path' => $path], 200);
+    }
 }
 
