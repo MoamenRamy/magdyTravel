@@ -1,4 +1,4 @@
-✈️ magdyTravel
+## ✈️ magdyTravel
 
 A Travel Management & Booking API built with Laravel 10, designed to provide a structured backend for managing travel services, destinations, trips, categories, rides, reviews, currencies, users, and travel bookings.
 
@@ -6,7 +6,7 @@ The project exposes a RESTful API that can be consumed by web or mobile frontend
 
 ---
 
-🌍 Overview
+### 🌍 Overview
 
 magdyTravel is a backend system for a tourism/travel platform.
 
@@ -28,7 +28,7 @@ The project is structured around Laravel's MVC architecture and uses Eloquent OR
 
 ---
 
-✨ Features
+### ✨ Features
 
 👤 Authentication & Users
 
@@ -45,11 +45,11 @@ Features include:
 - Protected authenticated-user endpoint
 
 Example:
-
+```text
 POST /api/register
 POST /api/login
 GET /api/user
-
+```
 Authenticated requests can use:
 
 auth:sanctum
@@ -63,13 +63,13 @@ for API authentication.
 Travel services can be managed through a dedicated REST API.
 
 Available operations include:
-
+```text
 GET     /api/travels
 POST    /api/travels
 GET     /api/travels/{id}
 PUT     /api/travels/{id}
 DELETE  /api/travels/{id}
-
+```
 Additional travel functionality includes:
 
 - Retrieve all travels
@@ -79,28 +79,28 @@ Additional travel functionality includes:
 - Delete travel photos
 
 Example:
-
+```text
 GET /api/travel/all
 GET /api/travels/by-category/{categorySlug}
 POST /api/travels/{id}/addPhotos
 DELETE /api/travels/photos/{id}
-
+```
 ---
 
 🗺️ Destinations
 
 The system provides CRUD operations for travel destinations.
-
+```text
 GET     /api/destinations
 POST    /api/destinations
 GET     /api/destinations/{id}
 PUT     /api/destinations/{id}
 DELETE  /api/destinations/{id}
-
+```
 Additional endpoint:
-
+```text
 GET /api/destination/all
-
+```
 ---
 
 🏷️ Categories
@@ -108,29 +108,29 @@ GET /api/destination/all
 Travel services can be organized using categories.
 
 Supported operations include:
-
+```text
 GET     /api/categories
 POST    /api/categories
 GET     /api/categories/{id}
 PUT     /api/categories/{id}
 DELETE  /api/categories/{id}
-
+```
 Category images can also be updated through:
-
+```text
 POST /api/category-photo-update
-
+```
 ---
 
 🚐 Rides & Transportation
 
 The API includes a dedicated resource for transportation/rides.
-
+```text
 GET     /api/rides
 POST    /api/rides
 GET     /api/rides/{id}
 PUT     /api/rides/{id}
 DELETE  /api/rides/{id}
-
+```
 This allows the travel platform to manage transportation services independently from travel packages.
 
 ---
@@ -138,13 +138,13 @@ This allows the travel platform to manage transportation services independently 
 📅 Travel Bookings
 
 Users can book travel services through the booking API.
-
+```text
 GET     /api/booking/travel
 POST    /api/booking/travel
 GET     /api/booking/travel/{id}
 PUT     /api/booking/travel/{id}
 DELETE  /api/booking/travel/{id}
-
+```
 This provides the backend foundation for managing customer travel reservations.
 
 ---
@@ -152,23 +152,23 @@ This provides the backend foundation for managing customer travel reservations.
 🧳 Trips
 
 Trips are managed through a dedicated API resource.
-
+```text
 GET     /api/trips
 POST    /api/trips
 GET     /api/trips/{id}
 PUT     /api/trips/{id}
 DELETE  /api/trips/{id}
-
+```
 The project also supports trip price management.
 
 Change the current trip price:
-
+```text
 POST /api/trips/price/change
-
+```
 Retrieve the latest trip price:
-
+```text
 GET /api/trips/price/show
-
+```
 This makes it possible to maintain pricing changes without modifying the original trip data directly.
 
 ---
@@ -176,13 +176,13 @@ This makes it possible to maintain pricing changes without modifying the origina
 💱 Currency Management
 
 The API provides CRUD operations for currencies.
-
+```text
 GET     /api/currencies
 POST    /api/currencies
 GET     /api/currencies/{id}
 PUT     /api/currencies/{id}
 DELETE  /api/currencies/{id}
-
+```
 This allows travel services and pricing logic to work with multiple currencies.
 
 ---
@@ -190,13 +190,13 @@ This allows travel services and pricing logic to work with multiple currencies.
 ⭐ Reviews
 
 Customer reviews are handled through their own RESTful resource.
-
+```text
 GET     /api/reviews
 POST    /api/reviews
 GET     /api/reviews/{id}
 PUT     /api/reviews/{id}
 DELETE  /api/reviews/{id}
-
+```
 Reviews can therefore be associated with the travel platform independently from the core travel data.
 
 ---
@@ -206,7 +206,7 @@ Reviews can therefore be associated with the travel platform independently from 
 The application follows RESTful API conventions using Laravel API resources.
 
 Main API resources:
-
+```text
 /api/users
 /api/travels
 /api/destinations
@@ -232,7 +232,7 @@ Additional endpoints provide specialized operations such as:
 
 /api/trips/price/change
 /api/trips/price/show
-
+```
 ---
 
 🔐 API Authentication
@@ -240,11 +240,11 @@ Additional endpoints provide specialized operations such as:
 The application uses Laravel Sanctum for API authentication.
 
 Protected requests can use:
-
+```text
 Route::middleware(['auth:sanctum'])
-
+```
 Example authenticated endpoint:
-
+```text
 GET /api/user
 
 Authentication flow:
@@ -256,11 +256,11 @@ Login
 Authentication Token
    ↓
 Authenticated API Requests
-
+```
 ---
 
-🛠️ Technology Stack
-
+### 🛠️ Technology Stack
+```text
 Technology| Usage
 PHP 8.1+| Backend language
 Laravel 10| Backend framework
@@ -278,13 +278,13 @@ Laravel Sail| Local development support
 Vite / Laravel Mix| Frontend asset management
 
 The package configuration in the repository confirms Laravel "^10.10", Sanctum "^3.3", Jetstream "^4.1", Livewire "^3.0", Guzzle "^7.2", and Eloquent Sluggable "^10.0".
-
+```
 ---
 
-🏗️ Project Architecture
+### 🏗️ Project Architecture
 
 The project follows Laravel's standard MVC architecture:
-
+```text
 magdyTravel/
 │
 ├── app/
@@ -320,13 +320,13 @@ magdyTravel/
 ├── composer.json
 ├── package.json
 └── artisan
-
+```
 ---
 
-🔄 API Workflow
+### 🔄 API Workflow
 
 A typical travel booking workflow can be represented as:
-
+```text
 Client
   │
   ▼
@@ -343,82 +343,83 @@ Booking
   │
   ▼
 Booking Management
-
+```
 The backend separates the major resources into independent API controllers, making the application easier to maintain and extend.
 
 ---
 
-⚙️ Installation
+### ⚙️ Installation
 
 1. Clone the repository
-
+```text
 git clone https://github.com/MoamenRamy/magdyTravel.git
 
 cd magdyTravel
-
+```
 2. Install PHP dependencies
-
+```text
 composer install
-
+```
 3. Create the environment file
-
+```text
 cp .env.example .env
-
+```
 On Windows:
 
 .env.example → .env
 
 4. Generate the application key
-
+```text
 php artisan key:generate
-
+```
 5. Configure the database
 
 Update your ".env" file:
-
+```text
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=your_database
 DB_USERNAME=your_username
 DB_PASSWORD=your_password
-
+```
 6. Run migrations
-
+```text
 php artisan migrate
-
+```
 If the project requires seeded data:
-
+```text
 php artisan db:seed
 
 Or:
 
 php artisan migrate --seed
+```
 
 7. Install frontend dependencies
-
+```text
 npm install
-
+```
 8. Start the development server
-
+```text
 php artisan serve
-
+```
 The API will be available at:
 
 http://127.0.0.1:8000
 
 ---
 
-🧪 Testing
+### 🧪 Testing
 
 Run the Laravel test suite:
-
+```text
 php artisan test
 
 Or:
 
 ./vendor/bin/phpunit
-
+```
 ---
 
 📡 Example API Requests
@@ -463,7 +464,7 @@ GET /api/trips/price/show
 
 ---
 
-🧩 Backend Concepts Demonstrated
+### 🧩 Backend Concepts Demonstrated
 
 This project demonstrates practical experience with:
 
@@ -490,7 +491,7 @@ This project demonstrates practical experience with:
 
 ---
 
-📈 Future Improvements
+### 📈 Future Improvements
 
 Potential extensions for the platform include:
 
@@ -509,22 +510,22 @@ Potential extensions for the platform include:
 
 ---
 
-🔒 Security
+### 🔒 Security
 
 Never commit sensitive credentials to the repository.
 
 Keep the following values inside ".env":
-
+```text
 APP_KEY=
 DB_PASSWORD=
 MAIL_PASSWORD=
 API_KEYS=
-
+```
 The ".env" file should remain excluded from Git.
 
 ---
 
-👨‍💻 Author
+### 👨‍💻 Author
 
 Moamen Ramy
 
@@ -540,8 +541,6 @@ MySQL
 REST APIs
 Sanctum
 Eloquent ORM
-Python
-Django
 Git
 GitHub
 
@@ -552,6 +551,6 @@ Links
 
 ---
 
-⭐ Project
+### ⭐ Project
 
 If you find this project useful or interesting, consider giving it a ⭐ on GitHub.
